@@ -97,6 +97,72 @@ const formulas = [
         properties: "λ est la constante radioactive. Le temps de demi-vie t1/2 est la durée au bout de laquelle la moitié des noyaux initiaux ont été désintégrés : t1/2 = ln(2)/λ.",
         units: "N nombre de noyaux (sans unité), λ en s⁻¹ (ou h⁻¹, an⁻¹), t en s (ou h, an).",
         tags: ["nucléaire", "temps"]
+    },
+    {
+        id: "quantitematiere",
+        title: "Quantité de matière (solide)",
+        subject: "chimie",
+        level: "1ere",
+        formula: "n = m / M",
+        definition: "Nombre de moles contenues dans une masse précise d'un corps pur.",
+        properties: "M est la masse molaire atomique ou moléculaire, elle se trouve dans le tableau périodique.",
+        units: "n en mol, m en grammes (g), M en g/mol.",
+        tags: ["moles", "chimie"]
+    },
+    {
+        id: "concentration",
+        title: "Concentration molaire",
+        subject: "chimie",
+        level: "1ere",
+        formula: "C = n / V",
+        definition: "Définit la quantité de soluté présente dans un litre de solution.",
+        properties: "À ne pas confondre avec la concentration massique Cm = m/V. On a la relation Cm = C * M.",
+        units: "C en mol/L, n en mol, V en Litres (L).",
+        tags: ["solutions", "molaire"]
+    },
+    {
+        id: "snell",
+        title: "Loi de Snell-Descartes",
+        subject: "physique",
+        level: "1ere",
+        formula: "n_1 \\sin(i_1) = n_2 \\sin(i_2)",
+        definition: "Décrit le changement de direction d'un rayon lumineux passant d'un milieu transparent à un autre.",
+        properties: "L'indice de réfraction n est sans unité et toujours ≥ 1 (n air ≈ 1,00).",
+        units: "i1 et i2 en degrés ou radians.",
+        tags: ["optique", "lumière"]
+    },
+    {
+        id: "gazparfait",
+        title: "Loi des gaz parfaits",
+        subject: "physique",
+        level: "terminale",
+        formula: "P \\times V = n \\times R \\times T",
+        definition: "Modèle thermodynamique décrivant le comportement des gaz à basse pression.",
+        properties: "Attention aux unités ! P en Pascal (Pa), V en m³ (et non litres), T en Kelvin (K = °C + 273,15).",
+        units: "R = 8,314 J/K/mol.",
+        tags: ["thermodynamique", "gaz"]
+    },
+    {
+        id: "photon",
+        title: "Énergie d'un photon",
+        subject: "physique",
+        level: "terminale",
+        formula: "E = h \\cdot f = \\frac{h \\cdot c}{\\lambda}",
+        definition: "Énergie transportée par un grain de lumière (quantum).",
+        properties: "L'énergie est inversement proportionnelle à la longueur d'onde : plus la longueur d'onde est courte (UV), plus le photon est énergétique.",
+        units: "E en Joules (J), h = 6,63.10⁻³⁴ J.s.",
+        tags: ["quantique", "lumière"]
+    },
+    {
+        id: "niveau-sonore",
+        title: "Niveau d'intensité sonore",
+        subject: "physique",
+        level: "terminale",
+        formula: "L = 10 \\log(I / I_0)",
+        definition: "Échelle logarithmique permettant de mesurer le niveau sonore perçu par l'oreille humaine.",
+        properties: "Si l'intensité sonore I est doublée, le niveau sonore L n'augmente que de 3 dB.",
+        units: "L en décibels (dB), I0 = 10⁻¹² W/m².",
+        tags: ["ondes", "son"]
     }
 ];
 
@@ -164,7 +230,7 @@ function showDetails(f) {
     modalBody.innerHTML = `
         <div id="section-formula" class="modal-section active">
             <h2 style="margin-bottom: 2rem; color: var(--primary)">${f.title}</h2>
-            <div style="font-size: 2.5rem; margin: 3rem 0; text-align: center;">
+            <div style="font-size: 2.3rem; margin: 3rem 0; text-align: center;">
                 \\[ ${f.formula} \\]
             </div>
             <p><strong>Unités :</strong> ${f.units}</p>
@@ -196,7 +262,6 @@ function showDetails(f) {
 }
 
 function switchTab(tabId) {
-    // Update button states
     const tabBtns = document.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => {
         if (btn.getAttribute('onclick').includes(tabId)) {
@@ -206,7 +271,6 @@ function switchTab(tabId) {
         }
     });
 
-    // Update section visibility
     const sections = document.querySelectorAll('.modal-section');
     sections.forEach(s => {
         if (s.id === `section-${tabId}`) {
@@ -217,10 +281,8 @@ function switchTab(tabId) {
     });
 }
 
-// Global exposure for HTML onclick
 window.switchTab = switchTab;
 
-// Events
 searchInput.oninput = (e) => {
     searchQuery = e.target.value;
     renderFormulas();
@@ -247,5 +309,4 @@ levelBtns.forEach(btn => {
 closeModal.onclick = () => modal.style.display = 'none';
 window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
 
-// Init
 renderFormulas();
