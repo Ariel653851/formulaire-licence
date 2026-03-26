@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysicHub - Formulaire de Physique-Chimie (1ère/Tle)</title>
+    <meta name="description" content="Toutes les formules de Physique et Chimie pour les classes de 1ère et Terminale. Recherche rapide et définitions complètes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- MathJax for nice formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <header class="glass">
+        <div class="header-content">
+            <div class="logo">
+                <i data-lucide="atom"></i>
+                <span>PhysicHub</span>
+            </div>
+            <nav>
+                <button class="nav-btn active" data-filter="all">Toutes</button>
+                <button class="nav-btn" data-filter="physique">Physique</button>
+                <button class="nav-btn" data-filter="chimie">Chimie</button>
+            </nav>
+            <div class="theme-toggle" id="theme-toggle">
+                <i data-lucide="moon" id="theme-icon"></i>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Le Formulaire de Sciences</h1>
+            <p>Retrouvez toutes les formules indispensables de 1ère et Terminale en un clin d'œil.</p>
+            <div class="search-container">
+                <i data-lucide="search"></i>
+                <input type="text" id="formula-search" placeholder="Rechercher une formule, une unité, un nom...">
+            </div>
+        </section>
+
+        <section class="filters">
+            <div class="level-tabs">
+                <button class="level-btn active" data-level="all">Tous les niveaux</button>
+                <button class="level-btn" data-level="1ere">Première</button>
+                <button class="level-btn" data-level="terminale">Terminale</button>
+            </div>
+        </section>
+
+        <section class="formulas-grid" id="formulas-container">
+            <!-- Formulas will be injected here by JS -->
+            <div class="loader">Chargement des formules...</div>
+        </section>
+    </main>
+
+    <div id="formula-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body">
+                <!-- Detailed view -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PhysicHub - Conçu pour les élèves de 1ère et Terminale.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
