@@ -26,7 +26,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Glassmorphism utility */
 .glass {
     background: var(--glass);
     backdrop-filter: blur(12px);
@@ -34,7 +33,6 @@ body {
     border: 1px solid var(--border);
 }
 
-/* Header */
 header {
     position: fixed;
     top: 0;
@@ -78,8 +76,7 @@ nav {
     gap: 1rem;
 }
 
-.nav-btn,
-.level-btn {
+.nav-btn, .level-btn {
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-muted);
@@ -90,19 +87,16 @@ nav {
     transition: var(--transition);
 }
 
-.nav-btn:hover,
-.level-btn:hover {
+.nav-btn:hover, .level-btn:hover {
     color: var(--text);
     background: rgba(255, 255, 255, 0.05);
 }
 
-.nav-btn.active,
-.level-btn.active {
+.nav-btn.active, .level-btn.active {
     background: var(--primary);
     color: white;
 }
 
-/* Hero Section */
 .hero {
     margin-top: 120px;
     text-align: center;
@@ -159,7 +153,6 @@ nav {
     box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
 }
 
-/* Levels */
 .filters {
     display: flex;
     justify-content: center;
@@ -174,11 +167,6 @@ nav {
     border: 1px solid var(--border);
 }
 
-.level-btn {
-    border-radius: 50px;
-}
-
-/* Formulas Grid */
 .formulas-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -225,20 +213,9 @@ nav {
     text-transform: uppercase;
 }
 
-.badge-physique {
-    background: rgba(59, 130, 246, 0.2);
-    color: var(--primary);
-}
-
-.badge-chimie {
-    background: rgba(168, 85, 247, 0.2);
-    color: var(--secondary);
-}
-
-.badge-level {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-muted);
-}
+.badge-physique { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
+.badge-chimie { background: rgba(168, 85, 247, 0.2); color: var(--secondary); }
+.badge-level { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); }
 
 .formula-card h3 {
     font-size: 1.25rem;
@@ -265,7 +242,6 @@ nav {
     color: var(--text-muted);
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -308,16 +284,11 @@ nav {
     border-bottom: 2px solid transparent;
 }
 
-.tab-btn:hover {
-    color: var(--text);
-}
-
 .tab-btn.active {
     color: var(--primary);
     border-bottom-color: var(--primary);
 }
 
-/* Modal Content Sections */
 .modal-section {
     display: none;
     animation: fadeIn 0.3s ease-out;
@@ -339,43 +310,11 @@ nav {
     color: var(--text-muted);
     font-size: 28px;
     cursor: pointer;
-    transition: var(--transition);
 }
 
-.close-modal:hover { color: white; transform: rotate(90deg); }
-
-/* Footer */
 footer {
     padding: 3rem;
     text-align: center;
     color: var(--text-muted);
     border-top: 1px solid var(--border);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .header-content {
-        padding: 0 1rem;
-    }
-
-    nav {
-        display: none;
-    }
-
-    /* On mobile, let's keep search active */
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .formulas-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Loader */
-.loader {
-    text-align: center;
-    padding: 3rem;
-    font-size: 1.2rem;
-    color: var(--text-muted);
 }

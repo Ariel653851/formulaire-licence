@@ -88,17 +88,6 @@ const formulas = [
         tags: ["spectroscopie", "lumière"]
     },
     {
-        id: "radioactivite",
-        title: "Loi de décroissance radioactive",
-        subject: "physique",
-        level: "terminale",
-        formula: "N(t) = N_0 \\cdot e^{-\\lambda t}",
-        definition: "La loi de décroissance radioactive donne le nombre de noyaux radioactifs restant dans un échantillon à un instant t donné.",
-        properties: "λ est la constante radioactive. Le temps de demi-vie t1/2 est la durée au bout de laquelle la moitié des noyaux initiaux ont été désintégrés : t1/2 = ln(2)/λ.",
-        units: "N nombre de noyaux (sans unité), λ en s⁻¹ (ou h⁻¹, an⁻¹), t en s (ou h, an).",
-        tags: ["nucléaire", "temps"]
-    },
-    {
         id: "quantitematiere",
         title: "Quantité de matière (solide)",
         subject: "chimie",
@@ -116,7 +105,7 @@ const formulas = [
         level: "1ere",
         formula: "C = n / V",
         definition: "Définit la quantité de soluté présente dans un litre de solution.",
-        properties: "À ne pas confondre avec la concentration massique Cm = m/V. On a la relation Cm = C * M.",
+        properties: "À ne pas confondre avec la concentration massique Cm = m/V.",
         units: "C en mol/L, n en mol, V en Litres (L).",
         tags: ["solutions", "molaire"]
     },
@@ -126,8 +115,8 @@ const formulas = [
         subject: "physique",
         level: "1ere",
         formula: "n_1 \\sin(i_1) = n_2 \\sin(i_2)",
-        definition: "Décrit le changement de direction d'un rayon lumineux passant d'un milieu transparent à un autre.",
-        properties: "L'indice de réfraction n est sans unité et toujours ≥ 1 (n air ≈ 1,00).",
+        definition: "Décrit le changement de direction d'un rayon lumineux passant d'un milieu à l'autre.",
+        properties: "L'indice de réfraction n est sans unité et toujours ≥ 1.",
         units: "i1 et i2 en degrés ou radians.",
         tags: ["optique", "lumière"]
     },
@@ -137,8 +126,8 @@ const formulas = [
         subject: "physique",
         level: "terminale",
         formula: "P \\times V = n \\times R \\times T",
-        definition: "Modèle thermodynamique décrivant le comportement des gaz à basse pression.",
-        properties: "Attention aux unités ! P en Pascal (Pa), V en m³ (et non litres), T en Kelvin (K = °C + 273,15).",
+        definition: "Modèle thermodynamique décrivant le comportement des gaz.",
+        properties: "P en Pascal (Pa), V en m³, T en Kelvin (K).",
         units: "R = 8,314 J/K/mol.",
         tags: ["thermodynamique", "gaz"]
     },
@@ -148,9 +137,9 @@ const formulas = [
         subject: "physique",
         level: "terminale",
         formula: "E = h \\cdot f = \\frac{h \\cdot c}{\\lambda}",
-        definition: "Énergie transportée par un grain de lumière (quantum).",
-        properties: "L'énergie est inversement proportionnelle à la longueur d'onde : plus la longueur d'onde est courte (UV), plus le photon est énergétique.",
-        units: "E en Joules (J), h = 6,63.10⁻³⁴ J.s.",
+        definition: "Énergie transportée par un grain de lumière.",
+        properties: "h = 6,63.10⁻³⁴ J.s.",
+        units: "E en Joules (J).",
         tags: ["quantique", "lumière"]
     },
     {
@@ -159,154 +148,73 @@ const formulas = [
         subject: "physique",
         level: "terminale",
         formula: "L = 10 \\log(I / I_0)",
-        definition: "Échelle logarithmique permettant de mesurer le niveau sonore perçu par l'oreille humaine.",
-        properties: "Si l'intensité sonore I est doublée, le niveau sonore L n'augmente que de 3 dB.",
-        units: "L en décibels (dB), I0 = 10⁻¹² W/m².",
+        definition: "Mesure du niveau sonore perçu par l'oreille humaine.",
+        properties: "I0 = 10⁻¹² W/m².",
+        units: "L en décibels (dB).",
         tags: ["ondes", "son"]
     }
 ];
 
-// State
-let currentFilter = 'all';
-let currentLevel = 'all';
-let searchQuery = '';
-
-const container = document.getElementById('formulas-container');
-const searchInput = document.getElementById('formula-search');
-const navBtns = document.querySelectorAll('.nav-btn');
-const levelBtns = document.querySelectorAll('.level-btn');
-const modal = document.getElementById('formula-modal');
-const modalBody = document.getElementById('modal-body');
-const closeModal = document.querySelector('.close-modal');
-
 // Functions
 function renderFormulas() {
-    container.innerHTML = '';
+    const cont = document.getElementById('formulas-container');
+    cont.innerHTML = '';
     
     const filtered = formulas.filter(f => {
         const matchesSubject = currentFilter === 'all' || f.subject === currentFilter;
         const matchesLevel = currentLevel === 'all' || f.level === currentLevel;
-        const searchLow = searchQuery.toLowerCase();
-        const matchesSearch = f.title.toLowerCase().includes(searchLow) || 
-                             f.tags.some(t => t.toLowerCase().includes(searchLow)) ||
-                             f.definition.toLowerCase().includes(searchLow) ||
-                             f.units.toLowerCase().includes(searchLow);
-        return matchesSubject && matchesLevel && matchesSearch;
+        const searchLow = (searchQuery || "").toLowerCase();
+        return matchesSubject && matchesLevel && f.title.toLowerCase().includes(searchLow);
     });
-
-    if (filtered.length === 0) {
-        container.innerHTML = '<div class="loader">Aucune formule trouvée...</div>';
-        return;
-    }
 
     filtered.forEach(f => {
         const card = document.createElement('div');
         card.className = `formula-card ${f.subject}`;
         card.innerHTML = `
-            <div class="card-header">
-                <span class="badge badge-${f.subject}">${f.subject}</span>
-                <span class="badge badge-level">${f.level === '1ere' ? 'Première' : 'Terminale'}</span>
-            </div>
+            <div class="card-header"><span class="badge badge-${f.subject}">${f.subject}</span></div>
             <h3>${f.title}</h3>
-            <div class="formula-display">
-                \\[ ${f.formula} \\]
-            </div>
-            <div class="card-footer">
-                <span>Détails & Définitions</span>
-                <i data-lucide="chevron-right"></i>
-            </div>
+            <div class="formula-display">\\[ ${f.formula} \\]</div>
+            <div class="card-footer"><span>Détails</span><i data-lucide="chevron-right"></i></div>
         `;
         card.onclick = () => showDetails(f);
-        container.appendChild(card);
+        cont.appendChild(card);
     });
 
-    if (window.MathJax) {
-        window.MathJax.typesetPromise();
-    }
+    if (window.MathJax) window.MathJax.typesetPromise();
     lucide.createIcons();
 }
 
 function showDetails(f) {
+    const modalBody = document.getElementById('modal-body');
     modalBody.innerHTML = `
         <div id="section-formula" class="modal-section active">
-            <h2 style="margin-bottom: 2rem; color: var(--primary)">${f.title}</h2>
-            <div style="font-size: 2.3rem; margin: 3rem 0; text-align: center;">
-                \\[ ${f.formula} \\]
-            </div>
-            <p><strong>Unités :</strong> ${f.units}</p>
+            <h2 style="color:var(--primary)">${f.title}</h2>
+            <div style="font-size:2.3rem;margin:2rem 0;text-align:center">\\[ ${f.formula} \\]</div>
+            <p><strong>Unités:</strong> ${f.units}</p>
         </div>
-        
         <div id="section-definition" class="modal-section">
-            <h2 style="margin-bottom: 1.5rem; color: var(--primary)">Définition</h2>
-            <p style="font-size: 1.1rem; line-height: 1.8;">${f.definition}</p>
+            <h2 style="color:var(--primary)">Définition</h2>
+            <p>${f.definition}</p>
         </div>
-        
         <div id="section-properties" class="modal-section">
-            <h2 style="margin-bottom: 1.5rem; color: var(--primary)">Propriétés & Conseils</h2>
-            <p style="font-size: 1.1rem; line-height: 1.8;">${f.properties}</p>
-            <div style="margin-top: 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                ${f.tags.map(t => `<span class="badge badge-level">#${t}</span>`).join('')}
-            </div>
+            <h2 style="color:var(--primary)">Propriétés</h2>
+            <p>${f.properties}</p>
         </div>
     `;
-    
-    // Reset tabs
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    tabBtns.forEach(btn => btn.classList.remove('active'));
-    tabBtns[0].classList.add('active');
-    
-    modal.style.display = 'block';
-    if (window.MathJax) {
-        window.MathJax.typesetPromise();
-    }
+    document.getElementById('formula-modal').style.display = 'block';
+    if (window.MathJax) window.MathJax.typesetPromise();
 }
 
 function switchTab(tabId) {
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    tabBtns.forEach(btn => {
-        if (btn.getAttribute('onclick').includes(tabId)) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-
-    const sections = document.querySelectorAll('.modal-section');
-    sections.forEach(s => {
-        if (s.id === `section-${tabId}`) {
-            s.classList.add('active');
-        } else {
-            s.classList.remove('active');
-        }
-    });
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('onclick').includes(tabId)));
+    document.querySelectorAll('.modal-section').forEach(s => s.classList.toggle('active', s.id === `section-${tabId}`));
 }
 
 window.switchTab = switchTab;
-
-searchInput.oninput = (e) => {
-    searchQuery = e.target.value;
-    renderFormulas();
-};
-
-navBtns.forEach(btn => {
-    btn.onclick = () => {
-        navBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderFormulas();
-    };
-});
-
-levelBtns.forEach(btn => {
-    btn.onclick = () => {
-        levelBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentLevel = btn.dataset.level;
-        renderFormulas();
-    };
-});
-
-closeModal.onclick = () => modal.style.display = 'none';
-window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+document.getElementById('formula-search').oninput = (e) => { searchQuery = e.target.value; renderFormulas(); };
+document.querySelectorAll('.nav-btn').forEach(btn => btn.onclick = () => { document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentFilter = btn.dataset.filter; renderFormulas(); });
+document.querySelectorAll('.level-btn').forEach(btn => btn.onclick = () => { document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentLevel = btn.dataset.level; renderFormulas(); });
+document.querySelector('.close-modal').onclick = () => document.getElementById('formula-modal').style.display = 'none';
+window.onclick = (e) => { if (e.target.className === 'modal') e.target.style.display = 'none'; };
 
 renderFormulas();
